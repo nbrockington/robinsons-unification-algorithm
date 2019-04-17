@@ -47,8 +47,8 @@ unifyTypes typeA typeB
 mainAlg :: ( String , String , String , String , String ) -> ( String , String , String , String , String )
 mainAlg ( unifier , uA , uB , utypeA , utypeB )
  | unifier == "Not unifiable: "         = ( "Not unifiable: " , uA , uB , " in " ++ utypeA , utypeB )
- | utypeA == utypeB                     = ( "Unifier: "++ unifier , uA , uB , "" , "" )
- | otherwise                            = mainAlg ( findDiff ( unifier , utypeA , utypeB , utypeA , utypeB ) )
+ | utypeA == utypeB              = ( "Unifier: "++ unifier , uA , uB , "" , "" )
+ | otherwise                       = mainAlg ( findDiff ( unifier , utypeA , utypeB , utypeA , utypeB ) )
 
 
 
@@ -62,9 +62,9 @@ findDiff :: ( String , String , String , String , String ) -> ( String , String 
 findDiff ( unifier , c:xs , d:ys , utypeA , utypeB ) 
  | c /= d && c == '(' && d `elem` subTypec = ( "Not unifiable: " , subTypec , "clashes with " ++ [d] , utypeA , utypeB )
  | c /= d && d == '(' && c `elem` subTyped = ( "Not unifiable: " , [c] , "clashes with " ++ subTyped , utypeA , utypeB )
- | c /= d && c /= '(' && d /= '('          = makeSubst ( incUnifier ( unifier , [d] , [c] ) , [d] , [c] , utypeA , utypeB )
- | c /= d && c == '('                      = makeSubst ( incUnifier ( unifier , subTypec , [d] ) , subTypec , [d] , utypeA , utypeB )
- | c /= d && d == '('                      = makeSubst ( incUnifier ( unifier , subTyped , [c] ) , subTyped , [c] , utypeA , utypeB )
+ | c /= d && c /= '(' && d /= '('          = makeSubst ( updateUnifier ( unifier , [d] , [c] ) , [d] , [c] , utypeA , utypeB )
+ | c /= d && c == '('                      = makeSubst ( updateUnifier ( unifier , subTypec , [d] ) , subTypec , [d] , utypeA , utypeB )
+ | c /= d && d == '('                      = makeSubst ( updateUnifier ( unifier , subTyped , [c] ) , subTyped , [c] , utypeA , utypeB )
  | otherwise                               = findDiff ( unifier , xs , ys , utypeA , utypeB )
    where subTypec = returnSubType ( c:xs )
          subTyped = returnSubType ( d:ys )
@@ -102,10 +102,10 @@ substiTute ( typeC , cvar , utype ) = foldl (\acc x -> if x `elem` cvar then acc
 
 
 
--- | The 'incUnifier' function takes in the unifier (m.g.u.) constructed so far, a type typeC, and type variable cvar,
+-- | The 'updateUnifier' function takes in the unifier (m.g.u.) constructed so far, a type typeC, and type variable cvar,
 -- and appends a new component typeC/cvar to the unifier substitution. 
 
-incUnifier :: ( String , String , String ) -> String
-incUnifier ( unifier , typeC , cvar ) 
+updateUnifier :: ( String , String , String ) -> String
+updateUnifier ( unifier , typeC , cvar ) 
  | init unifier == "["       = ( init unifier ) ++ typeC ++ "/" ++ cvar ++ "]"
- | otherwise                 = ( init unifier ) ++ ", " ++  typeC ++ "/" ++ cvar ++ "]"
+ | otherwise            = ( init unifier ) ++ ", " ++  typeC ++ "/" ++ cvar ++ "]"
