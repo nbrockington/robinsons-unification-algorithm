@@ -47,8 +47,8 @@ unifyTypes typeA typeB
 mainAlg :: ( String , String , String , String , String ) -> ( String , String , String , String , String )
 mainAlg ( unifier , uA , uB , utypeA , utypeB )
  | unifier == "Not unifiable: "         = ( "Not unifiable: " , uA , uB , " in " ++ utypeA , utypeB )
- | utypeA == utypeB              = ( "Unifier: "++ unifier , uA , uB , "" , "" )
- | otherwise                       = mainAlg ( findDiff ( unifier , utypeA , utypeB , utypeA , utypeB ) )
+ | utypeA == utypeB                     = ( "Unifier: "++ unifier , uA , uB , "" , "" )
+ | otherwise                            = mainAlg ( findDiff ( unifier , utypeA , utypeB , utypeA , utypeB ) )
 
 
 
@@ -108,4 +108,4 @@ substiTute ( typeC , cvar , utype ) = foldl (\acc x -> if x `elem` cvar then acc
 incUnifier :: ( String , String , String ) -> String
 incUnifier ( unifier , typeC , cvar ) 
  | init unifier == "["       = ( init unifier ) ++ typeC ++ "/" ++ cvar ++ "]"
- | otherwise            = ( init unifier ) ++ ", " ++  typeC ++ "/" ++ cvar ++ "]"
+ | otherwise                 = ( init unifier ) ++ ", " ++  typeC ++ "/" ++ cvar ++ "]"
