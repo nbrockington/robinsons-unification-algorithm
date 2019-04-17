@@ -11,6 +11,9 @@ See also: https://en.wikipedia.org/wiki/Unification_(computer_science)#A_unifica
 
 Accepts exactly two arguments of type 'String': *Main> unifyTypes typeA typeB
 
+-- N.B. For input types, outer parentheses are assumed omitted; inner	parentheses must be present
+-- i.e.	association of nested arrows to	the right is not assumed.
+
 If the input types are unifiable, returns the most general unifier U
 and the most general unification of type A and type B.
 
