@@ -29,7 +29,7 @@ Example call: *Main> unifyTypes "b -> b" "(a -> a) -> c"
 Returns: ["Unifier: [(a -> a)/b, (a -> a)/c]","(a -> a) -> (a -> a)"]
 
 
-# Current known bugs 
+# Current known issues
 
 1. In general, does not recognise that nested arrows associate to the right and therefore requires parentheses in input types. 
 For example: 
